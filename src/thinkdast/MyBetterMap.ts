@@ -30,9 +30,9 @@ export default class MyBetterMap<K, V> extends Map<K, V> {
         console.log(this.size);
         return map.delete(key);
     };
-    mySet = (key: K, value: V): this => {
+    set = (key: K, value: V): this => {
         const map = this.chooseMap(key);
-        map.mySet(key, value);
+        map.set(key, value);
         this.size++;
         console.log(this.size);
         return this;

@@ -4,11 +4,11 @@ import { expect, test, beforeEach } from 'vitest';
 const map = new MyHashMap<string, number>();
 
 beforeEach(() => {
-    map.mySet('One', 1)
-        .mySet('Two', 2)
-        .mySet('Three', 3)
-        .mySet('Thousand hundred twenty five', 1125)
-        .mySet('Thousand hundred twenty six', 1126);
+    map.set('One', 1)
+        .set('Two', 2)
+        .set('Three', 3)
+        .set('Thousand hundred twenty five', 1125)
+        .set('Thousand hundred twenty six', 1126);
 });
 
 test('clear', () => {

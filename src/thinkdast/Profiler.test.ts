@@ -26,21 +26,21 @@ beforeEach(() => {
 test('Profile MyLinearMap put', () => {
     const profiler = new Profiler();
     profiler.start('MyLinearMap put');
-    linearMap.mySet('One', 1);
+    linearMap.set('One', 1);
     profiler.end();
 });
 
 test('Profile MyBetterMap put', () => {
     const profiler = new Profiler();
     profiler.start('MyBetterMap put');
-    betterMap.mySet('One', 1);
+    betterMap.set('One', 1);
     profiler.end();
 });
 
 test('Profile MyHashMap put', () => {
     const profiler = new Profiler();
     profiler.start('MyHashMap put');
-    hashMap.mySet('One', 1);
+    hashMap.set('One', 1);
     profiler.end();
 });
 
@@ -48,15 +48,15 @@ test('Profile All put 1 items', () => {
     const profiler = new Profiler();
 
     profiler.start('MyLinearMap put');
-    linearMap.mySet('One', 1);
+    linearMap.set('One', 1);
     profiler.end();
 
     profiler.start('MyBetterMap put');
-    betterMap.mySet('One', 1);
+    betterMap.set('One', 1);
     profiler.end();
 
     profiler.start('MyHashMap put');
-    hashMap.mySet('One', 1);
+    hashMap.set('One', 1);
     profiler.end();
 });
 
@@ -64,14 +64,14 @@ test('Profile All put multiple items', () => {
     const profiler = new Profiler();
 
     profiler.start('MyLinearMap put 5 items');
-    multiple.forEach((it) => linearMap.mySet(it.key, it.value));
+    multiple.forEach((it) => linearMap.set(it.key, it.value));
     profiler.end();
 
     profiler.start('MyBetterMap put 5 items');
-    multiple.forEach((it) => betterMap.mySet(it.key, it.value));
+    multiple.forEach((it) => betterMap.set(it.key, it.value));
     profiler.end();
 
     profiler.start('MyHashMap put 5 items');
-    multiple.forEach((it) => hashMap.mySet(it.key, it.value));
+    multiple.forEach((it) => hashMap.set(it.key, it.value));
     profiler.end();
 });

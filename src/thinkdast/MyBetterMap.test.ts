@@ -4,9 +4,9 @@ import { expect, test, beforeEach } from 'vitest';
 const map = new MyBetterMap<string, number>();
 
 beforeEach(() => {
-    map.mySet('One', 1);
-    map.mySet('Two', 2);
-    map.mySet('Three', 3);
+    map.set('One', 1);
+    map.set('Two', 2);
+    map.set('Three', 3);
 });
 
 test('clear', () => {

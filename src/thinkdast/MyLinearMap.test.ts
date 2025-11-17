@@ -4,14 +4,17 @@ import Profiler from './Profiler';
 
 const map = new MyLinearMap<string, number>();
 const profiler = new Profiler();
-beforeEach(() => {
-    map.mySet('One', 1).mySet('Two', 2).mySet('Three', 3);
+const setItems = async () => {
+    map.set('One', 1).set('Two', 2).set('Three', 3);
+};
+beforeEach(async () => {
+    await setItems();
 });
 
 test('clear', () => {
-    expect(map.length).toBe(1);
+    expect(map.size).toBe(3);
     map.clear();
-    expect(map.length).toBe(0);
+    expect(map.size).toBe(0);
 });
 
 test('contains key', () => {
@@ -31,7 +34,7 @@ test('remove key', () => {
 
 test('profile put', () => {
     profiler.start('MyLinearMap put');
-    map.mySet('Four', 4);
+    map.set('Four', 4);
     profiler.end();
 });
 

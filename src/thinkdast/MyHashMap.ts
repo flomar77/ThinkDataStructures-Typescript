@@ -2,9 +2,9 @@ import MyBetterMap from './MyBetterMap';
 import MyLinearMap from './MyLinearMap';
 export default class MyHashMap<K, V> extends MyBetterMap<K, V> {
     factor = 1;
-    mySet = (key: K, value: V) => {
+    set = (key: K, value: V) => {
         const map = this.chooseMap(key);
-        map.mySet(key, value);
+        map.set(key, value);
         if (this.sumLinearMapEntries() > this.maps.length * this.factor) {
             this.rehash();
         }
@@ -28,7 +28,7 @@ export default class MyHashMap<K, V> extends MyBetterMap<K, V> {
             for (const map of maps.myEntries) {
                 if (map.key !== undefined && map.value !== undefined) {
                     const targetMap = this.chooseMap(map.key);
-                    targetMap.mySet(map.key, map.value);
+                    targetMap.set(map.key, map.value);
                 }
             }
         }

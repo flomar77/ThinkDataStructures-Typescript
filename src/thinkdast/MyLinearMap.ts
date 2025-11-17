@@ -39,7 +39,7 @@ export default class MyLinearMap<K, V> extends Map<K, V> {
         return deleted;
     };
 
-    mySet = (key: K, value: V): this => {
+    set = (key: K, value: V): this => {
         this.delete(key);
         const newEntry = new Entry(key, value);
         this.myEntries.push(newEntry);
