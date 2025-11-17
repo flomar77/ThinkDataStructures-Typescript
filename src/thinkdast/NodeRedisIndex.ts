@@ -3,27 +3,27 @@ import { createClient } from 'redis';
 
 class NodeRedisIndex {
     client: any;
-    setup = () => {
+    setup() {
         this.client = this.create();
         this.client.connect();
-    };
-    create = async () => {
+    }
+    async create() {
         const redisClient = await createClient().on('error', (err: Error) =>
             console.log('Redis Client Error', err)
         );
         return redisClient;
-    };
-    connect = () => {
+    }
+    connect() {
         if (this.client !== undefined) {
             this.client.connect();
         }
-    };
-    indexPage = () => {
+    }
+    indexPage() {
         /* Needs page url */
-    };
+    }
 
-    pushTermCounterToRedis = () => {
+    pushTermCounterToRedis() {
         /* Needs TermCounter */
-    };
-    getCounts = () => {};
+    }
+    getCounts() {}
 }

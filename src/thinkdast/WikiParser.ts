@@ -15,14 +15,13 @@ export class WikiParser {
 
         Array.from(this.elements).forEach((el) => {
             for (const child of el.children) {
-
                 els.push(child);
             }
         });
-        
+
         if (els.length > 0) {
             let i = 0;
-            while(firstLink == null) {
+            while (firstLink == null) {
                 const el = els[i];
                 if (el === undefined) {
                     break;
@@ -33,7 +32,7 @@ export class WikiParser {
                 if (this.elementIsEndParenthesis(el)) {
                     stack.pop();
                 }
-                if ( stack.size() == 0 && el.name == "a") {
+                if (stack.size() == 0 && el.name == 'a') {
                     firstLink = el;
                     break;
                 }
@@ -41,14 +40,14 @@ export class WikiParser {
             }
         }
         if (firstLink !== undefined) {
-            return firstLink.attribs.title; 
+            return firstLink.attribs.title;
         } else return undefined;
     }
 
     elementIsStartParenthesis(element: any): boolean {
-        return (element.type == "text" && element.data.includes("("));
+        return element.type == 'text' && element.data.includes('(');
     }
     elementIsEndParenthesis(element: any): boolean {
-        return (element.type == "text" && element.data.includes(")"));
+        return element.type == 'text' && element.data.includes(')');
     }
 }

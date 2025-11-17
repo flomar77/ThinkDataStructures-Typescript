@@ -3,41 +3,41 @@ export default class MyBetterMap<K, V> extends Map<K, V> {
     maps: MyLinearMap<K, V>[] = [];
     length: number = 0;
     size: number = 0;
-    makeMaps = (n: number) => {
+    makeMaps(n: number) {
         for (let i = 0; i++; i < n - 1) {
             this.maps[i] = new MyLinearMap<K, V>();
         }
-    };
-    clear = () => {
+    }
+    clear() {
         this.maps = [];
         this.size = 0;
-    };
-    containsKey = (key: K): boolean => {
+    }
+    containsKey(key: K): boolean {
         const map = this.chooseMap(key);
         return map.containsKey(key);
-    };
-    containsValue = (value: V) => {
+    }
+    containsValue(value: V) {
         for (const map of this.maps) {
             if (map.containsValue(value)) {
                 return true;
             }
         }
         return false;
-    };
-    delete = (key: K) => {
+    }
+    delete(key: K) {
         const map = this.chooseMap(key);
         this.size = this.size--;
         console.log(this.size);
         return map.delete(key);
-    };
-    set = (key: K, value: V): this => {
+    }
+    set(key: K, value: V): this {
         const map = this.chooseMap(key);
         map.set(key, value);
         this.size++;
         console.log(this.size);
         return this;
-    };
-    chooseMap = (key: K): MyLinearMap<K, V> => {
+    }
+    chooseMap(key: K): MyLinearMap<K, V> {
         let index = 0;
         if (typeof key === 'string' && this.maps.length > 0) {
             key.toString()
@@ -51,12 +51,12 @@ export default class MyBetterMap<K, V> extends Map<K, V> {
             this.maps[index] = new MyLinearMap();
         }
         return this.maps[index];
-    };
-    sumLinearMapEntries = (): number => {
+    }
+    sumLinearMapEntries(): number {
         const sum = this.maps.reduce((acc, it) => {
             return (acc += it.myEntries.length);
         }, 0);
         console.log(`sumLinearMapEntries: ${sum}`);
         return sum;
-    };
+    }
 }
