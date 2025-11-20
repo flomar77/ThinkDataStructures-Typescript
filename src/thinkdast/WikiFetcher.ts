@@ -8,17 +8,24 @@ export class WikiFetcher {
     minInterval: number = 600;
     elements: cheerio.Cheerio<Element> | undefined = undefined;
 
-    async fetchWikipedia(pageName: string) {
-        const url =
-            'https://en.wikipedia.org/w/api.php?' +
-            new URLSearchParams({
-                origin: '*',
-                action: 'parse',
-                page: pageName,
-                format: 'json',
-            });
+    async fetchWikipedia(
+        pageName: string
+    ): Promise<cheerio.CheerioAPI | undefined> {
+        const baseUrl = 'https://en.wikipedia.org/w/api.php';
+        const headers = {
+            'User-Agent': 'TsThinkDataStructures/1.0 (tsthinkdata@gmx.de)',
+            'Content-Type': 'application/json',
+        };
+        const queryParams = new URLSearchParams({
+            action: 'parse',
+            format: 'json',
+            page: pageName,
+            origin: '*', // Required for some cross-origin requests, good practice
+        });
+        const requestUrl = `${baseUrl}?${queryParams}`;
         try {
-            const response = await axios.get(url);
+            const response = await axios.get(requestUrl, { headers: headers });
+
             const $ = cheerio.load(response.data.parse.text['*']);
             return $('.mw-content-ltr > p:not(.mw-empty-elt)');
         } catch (error: any) {

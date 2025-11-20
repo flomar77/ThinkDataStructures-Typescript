@@ -27,8 +27,8 @@ export class Index {
         return this.index.get(term);
     }
 
-    indexPage(pageTitle: string, elements: cheerio.Cheerio<Element>) {
-        const tCounter = new TermCounter(pageTitle);
+    indexPage(pageName: string, elements: cheerio.Cheerio<Element>) {
+        const tCounter = new TermCounter(pageName);
         tCounter.processElements(elements);
 
         for (const t of tCounter.getAll()) {

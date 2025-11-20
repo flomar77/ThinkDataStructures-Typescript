@@ -8,14 +8,14 @@ export class TermCounter {
     }
 
     put(term: string, count: number) {
-        this.map.mySet(term, count);
+        this.map.set(term, count);
     }
     get(term: string): number {
         const count = this.map.get(term);
         return count === 0 || count === undefined ? 0 : count;
     }
     getAll(): Map<string, number> {
-        return new Map([...this.map.myEntries()].sort());
+        return new Map([...this.map.entries()].sort());
     }
     incrementTermCount(term: string) {
         this.put(term, this.get(term) + 1);
