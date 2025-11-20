@@ -10,7 +10,7 @@ export class WikiFetcher {
 
     async fetchWikipedia(
         pageName: string
-    ): Promise<cheerio.CheerioAPI | undefined> {
+    ): Promise<cheerio.Cheerio<Element> | undefined> {
         const baseUrl = 'https://en.wikipedia.org/w/api.php';
         const headers = {
             'User-Agent': 'TsThinkDataStructures/1.0 (tsthinkdata@gmx.de)',

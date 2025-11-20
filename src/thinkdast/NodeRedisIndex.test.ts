@@ -17,7 +17,6 @@ const loadIndex = async () => {
     await myIndex.indexPage(page1, paragraphs1);
     await myIndex.indexPage(page2, paragraphs2);
 };
-
 beforeEach(async () => {
     await myIndex.createAndConnect();
     await loadIndex();
@@ -27,8 +26,12 @@ test('testGetCounts', async () => {
     const allThe = await myIndex.getCounts('the');
     expect(allThe.get(page1)).toBe(207);
     expect(allThe.get(page2)).toBe(238);
+});
 
-    // const allJava = await myIndex.getCounts('java');
-    // console.log(allJava);
-    // expect(allJava.get(page1)).toBe(156);
+test('test delete urlSetKeys', async () => {
+    const keysUrls = await myIndex.urlSetKeys();
+    expect(keysUrls?.length).toBe(1834);
+    await myIndex.deleteURLSets();
+    const keysUrlsAfterDelete = await myIndex.urlSetKeys();
+    expect(keysUrlsAfterDelete?.length).toBe(0);
 });

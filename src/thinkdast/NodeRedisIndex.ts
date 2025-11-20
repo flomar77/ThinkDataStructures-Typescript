@@ -10,26 +10,7 @@ export default class NodeRedisIndex {
         );
         if (this.client) {
             await this.client.connect();
-        }
-    }
-    async create(): Promise<RedisClientType | undefined> {
-        let client = undefined;
-        const get = async () => {
-            const redisClient = await createClient().on(
-                'error',
-                (err: Error) => {
-                    console.log('Redis Client Error', err);
-                    throw err;
-                }
-            );
-            client = redisClient;
-        };
-        get();
-        return client;
-    }
-    connect() {
-        if (this.client !== undefined) {
-            this.client.connect();
+            console.log('create and connect client in NodeRedisIndex');
         }
     }
     async indexPage(
@@ -49,20 +30,18 @@ export default class NodeRedisIndex {
     }
 
     async pushTermCounterToRedis(tCounter: TermCounter) {
-        /* Needs TermCounter */
         const hashname = this.termCounterKey(tCounter.pageTitle);
         if (this.client !== undefined) {
             console.log('Create or delete ' + hashname);
             this.client.del(hashname);
+            const trans = this.client.multi();
             for (const t of tCounter.getAll()) {
                 const term = t[0];
                 const count = tCounter.get(term);
-                await this.client.hSet(hashname, term, count.toString());
-                await this.client.sAdd(
-                    this.urlSetKey(term),
-                    tCounter.pageTitle
-                );
+                await trans.hSet(hashname, term, count.toString());
+                await trans.sAdd(this.urlSetKey(term), tCounter.pageTitle);
             }
+            await trans.exec();
         }
     }
     /**
@@ -71,7 +50,6 @@ export default class NodeRedisIndex {
     async getURLs(term: string) {
         if (this.client !== undefined) {
             const urls = await this.client.sMembers(this.urlSetKey(term));
-            console.log(urls);
             return urls;
         }
     }
@@ -100,5 +78,72 @@ export default class NodeRedisIndex {
             }
         }
         return map;
+    }
+    termCounterKeys() {
+        if (this.client !== undefined) {
+            return this.client.keys('TermCounter:*');
+        }
+    }
+    urlSetKeys() {
+        if (this.client !== undefined) {
+            return this.client.keys('URLSet:*');
+        }
+    }
+    /**
+     * Deletes all URLSet objects from the database.
+     *
+     * Should be used for development and testing, not production.
+     */
+    async deleteURLSets() {
+        if (this.client !== undefined) {
+            const allKeys = await this.urlSetKeys();
+            const trans = this.client.multi();
+            if (allKeys !== undefined) {
+                for (const key of allKeys) {
+                    trans.del(key);
+                }
+            }
+            await trans.exec();
+        }
+    }
+    // TESTING delete
+    async delete(term: string) {
+        if (this.client !== undefined) {
+            const trans = this.client.multi();
+            trans.del(this.urlSetKey(term));
+            await trans.exec();
+        }
+    }
+
+    /**
+     * Deletes all URLSet objects from the database.
+     *
+     * Should be used for development and testing, not production.
+     */
+    async deleteTermCounters() {
+        let keys = await this.termCounterKeys();
+        if (this.client !== undefined) {
+            const trans = this.client.multi();
+            for (const key in keys) {
+                trans.del(key);
+            }
+            await trans.exec();
+        }
+    }
+
+    /**
+     * Deletes all keys from the database.
+     *
+     * Should be used for development and testing, not production.
+     */
+    async deleteAllKeys() {
+        if (this.client !== undefined) {
+            let keys = await this.client.keys('*');
+            const trans = this.client.multi();
+            for (const key in keys) {
+                trans.del(key);
+            }
+            await trans.exec();
+        }
     }
 }
